@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BeatifyArtistService implements ArtistService {
 
-    private ArtistRepository artistRepository;
-    private ModelMapper modelMapper;
+    private final ArtistRepository artistRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BeatifyArtistService(ArtistRepository artistRepository, ModelMapper modelMapper) {

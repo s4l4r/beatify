@@ -12,7 +12,7 @@ import org.springframework.validation.Validator;
 @Qualifier(value = "emailValidator")
 public class DuplicateEmailValidator implements Validator {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public DuplicateEmailValidator(UserService userService) {

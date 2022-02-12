@@ -18,8 +18,8 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class BeatifySecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private DataSource dataSource;
-    private PasswordEncoder passwordEncoder;
+    private final DataSource dataSource;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public BeatifySecurityConfig(DataSource dataSource, PasswordEncoder passwordEncoder) {

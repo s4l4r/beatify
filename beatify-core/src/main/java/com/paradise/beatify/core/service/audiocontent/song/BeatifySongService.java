@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BeatifySongService implements SongService {
 
-    private SongRepository songRepository;
-    private ModelMapper modelMapper;
+    private final SongRepository songRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BeatifySongService(SongRepository songRepository, ModelMapper modelMapper) {

@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BeatifyBandService implements BandService {
 
-    private BandRepository bandRepository;
-    private ModelMapper modelMapper;
+    private final BandRepository bandRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BeatifyBandService(BandRepository bandRepository, ModelMapper modelMapper) {

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class BeatifyAlbumService implements AlbumService {
 
-    private AlbumRepository albumRepository;
-    private ModelMapper modelMapper;
+    private final AlbumRepository albumRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BeatifyAlbumService(AlbumRepository albumRepository, ModelMapper modelMapper) {

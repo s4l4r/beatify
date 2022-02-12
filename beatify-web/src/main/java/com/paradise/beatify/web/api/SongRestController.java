@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping(value = "/api/songs")
 public class SongRestController {
 
-    private SongService songService;
+    private final SongService songService;
 
     @Autowired
     public SongRestController(SongService songService) {
@@ -30,7 +30,6 @@ public class SongRestController {
     public BaseEntityDTO getSongById(Long id) {
 
         try {
-
             return songService.getById(id);
         } catch(ServiceException e) {
 

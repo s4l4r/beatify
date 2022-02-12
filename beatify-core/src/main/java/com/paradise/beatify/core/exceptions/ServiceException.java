@@ -2,7 +2,7 @@ package com.paradise.beatify.core.exceptions;
 
 public class ServiceException extends Exception {
 
-    private String title;
+    private final String title;
 
     public ServiceException(String title) {
 

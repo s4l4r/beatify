@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BeatifyPlaylistService implements PlaylistService {
 
-    private PlaylistRepository playlistRepository;
-    private ModelMapper modelMapper;
+    private final PlaylistRepository playlistRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BeatifyPlaylistService(PlaylistRepository playlistRepository, ModelMapper modelMapper) {

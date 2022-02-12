@@ -16,8 +16,8 @@ import java.util.Arrays;
 @RequestMapping(value = {"/", "home"})
 public class HomeController {
 
-    private AlbumService albumService;
-    private PrincipalHelper principalHelper;
+    private final AlbumService albumService;
+    private final PrincipalHelper principalHelper;
 
     @Autowired
     public HomeController(AlbumService albumService, PrincipalHelper principalHelper) {
