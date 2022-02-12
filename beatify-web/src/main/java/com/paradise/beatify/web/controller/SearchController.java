@@ -16,8 +16,8 @@ import java.util.Arrays;
 @RequestMapping("/search")
 public class SearchController {
 
-    private PrincipalHelper principalHelper;
-    private AlbumService albumService;
+    private final PrincipalHelper principalHelper;
+    private final AlbumService albumService;
 
     @Autowired
     public SearchController(PrincipalHelper principalHelper, AlbumService albumService) {

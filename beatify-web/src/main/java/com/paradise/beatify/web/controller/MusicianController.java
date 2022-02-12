@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = {"/artists", "/bands"})
 public class MusicianController {
 
-    private ArtistService artistService;
-    private BandService bandService;
-    private PrincipalHelper principalHelper;
-    private AlbumService albumService;
+    private final ArtistService artistService;
+    private final BandService bandService;
+    private final PrincipalHelper principalHelper;
+    private final AlbumService albumService;
 
     @Autowired
     public MusicianController(ArtistService artistService, BandService bandService, PrincipalHelper principalHelper,

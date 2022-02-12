@@ -18,8 +18,8 @@ import java.util.Arrays;
 @RequestMapping("/albums")
 public class AlbumController {
 
-    private AlbumService albumService;
-    private PrincipalHelper principalHelper;
+    private final AlbumService albumService;
+    private final PrincipalHelper principalHelper;
 
     @Autowired
     public AlbumController(AlbumService albumService, PrincipalHelper principalHelper) {

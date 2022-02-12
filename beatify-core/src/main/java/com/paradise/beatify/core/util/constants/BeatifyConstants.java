@@ -16,8 +16,8 @@ public class BeatifyConstants {
     public static final String WEB_PERSISTENT_UNIT = "beatify-pu";
     public static final String WEB_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     public static final String WEB_DATABASE_URL = "jdbc:mysql://localhost:3306/beatify?useSSL=false";
-    public static final String WEB_DATABASE_USERNAME = "beatifyAdmin";
-    public static final String WEB_DATABASE_PASSWORD = "AS922020393";
+    public static final String WEB_DATABASE_USERNAME = "root";
+    public static final String WEB_DATABASE_PASSWORD = "mysql-root-password";
 
     // Servlet Configuration
     public static final String WEB_DISPATCHER_SERVLET_NAME = "dispatcherServlet";

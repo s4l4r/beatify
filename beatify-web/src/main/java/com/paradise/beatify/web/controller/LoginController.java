@@ -16,7 +16,7 @@ import java.util.Arrays;
 @RequestMapping("/login")
 public class LoginController {
 
-    private PrincipalHelper principalHelper;
+    private final PrincipalHelper principalHelper;
 
     @Autowired
     public LoginController(PrincipalHelper principalHelper) {

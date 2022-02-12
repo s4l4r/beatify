@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BeatifyUserService implements UserService {
 
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
-    private PasswordEncoder passwordEncoder;
-    private AuthorityService authorityService;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthorityService authorityService;
 
     @Autowired
     public BeatifyUserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder,
@@ -71,14 +71,12 @@ public class BeatifyUserService implements UserService {
 
     @Override
     public UserDTO getByEmailAddress(String emailAddress) throws ServiceException {
-
         BeatifyUser user = userRepository.findByEmailAddress(emailAddress)
                 .orElseThrow(() -> new ServiceException("No user found with email address " + emailAddress));
         return modelMapper.map(user, UserDTO.class);
     }
 
     private String getEncryptedPassword(String rawPassword) {
-
         return passwordEncoder.encode(rawPassword);
     }
 }

@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BeatifyAuthorityService implements AuthorityService {
 
-    private AuthorityRepository authorityRepository;
-    private ModelMapper modelMapper;
+    private final AuthorityRepository authorityRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BeatifyAuthorityService(AuthorityRepository authorityRepository, ModelMapper modelMapper) {
@@ -33,7 +33,7 @@ public class BeatifyAuthorityService implements AuthorityService {
     }
 
     @Override
-    public AuthorityDTO createAuthority(UserDTO userDTO) throws ServiceException {
+    public AuthorityDTO createAuthority(UserDTO userDTO) {
 
         AuthorityDTO authorityDTO = new AuthorityDTO();
         authorityDTO.setRole("ROLE_USER");

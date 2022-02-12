@@ -16,8 +16,8 @@ import org.springframework.ui.Model;
 @Component
 public class PrincipalHelper {
 
-    private UserService userService;
-    private ModelMapper modelMapper;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public PrincipalHelper(UserService userService, ModelMapper modelMapper) {

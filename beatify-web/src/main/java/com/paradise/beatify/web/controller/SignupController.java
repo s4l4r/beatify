@@ -23,10 +23,10 @@ import java.util.Arrays;
 @RequestMapping(value = "/signup")
 public class SignupController {
 
-    private UserService userService;
-    private Validator validator;
-    private PrincipalHelper principalHelper;
-    private AlbumService albumService;
+    private final UserService userService;
+    private final Validator validator;
+    private final PrincipalHelper principalHelper;
+    private final AlbumService albumService;
 
     @Autowired
     public SignupController(UserService userService, @Qualifier("emailValidator") Validator validator,
