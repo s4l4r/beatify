@@ -16,7 +16,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Package
-        run: mvn Package
+        run: mvn package
       - name: Prepare Artifact
         run: mkdir -p staging/target && cp -r beatify-web/target/beatify-web.war staging/target && cp Dockerfile staging/target
       - name: Upload Artifact
