@@ -60,12 +60,12 @@ public class InsertData {
         album.setYear(2003);
         album.setActive(true);
         album.setTitle("Meteora");
-        album.setAlbumArtURL("http://localhost:8080/beatify/resources/images/albumcovers/Meteora.jpg");
+        album.setAlbumArtURL("http://localhost:8080/beatify-web/resources/images/albumcovers/Meteora.jpg");
 
         Song song = new Song();
         song.setAlbum(album);
         song.setDuration("3:35");
-        song.setServerURL("http://localhost:8080/beatify/resources/mp3/Forgotten.mp3");
+        song.setServerURL("http://localhost:8080/beatify-web/resources/mp3/Forgotten.mp3");
         song.setActive(true);
         song.setTitle("Forgotten");
 

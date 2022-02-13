@@ -144,7 +144,7 @@
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <sform:form method="post" action="http://localhost:8080/beatify/signup" modelAttribute="userDTO" id="login-form">
+                                                    <sform:form method="post" action="http://localhost:8080/beatify-web/signup" modelAttribute="userDTO" id="login-form">
                                                         <sform:input path="username" id="usernameSignup"
                                                                      cssClass="form-control" type="email"
                                                                      placeholder="Your Email Addressِ"/>
