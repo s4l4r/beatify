@@ -13,7 +13,7 @@
 
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/beatify?useSSL=false"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://mysql/beatify?useSSL=false"/>
             <property name="hibernate.connection.username" value="root"/>
             <property name="hibernate.connection.password" value="mysql-root-password"/>
             <property name="hibernate.connection.characterEncoding" value="utf-8"/>
