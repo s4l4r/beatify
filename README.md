@@ -1,46 +1,63 @@
 # Beatify
 
-A music streaming web application built with Spring MVC, Hibernate, and MySQL, served on Apache Tomcat.
+A modern music streaming web application with a Spotify-inspired dark UI.
 
-![Java](https://img.shields.io/badge/Java-8-orange)
-![Spring](https://img.shields.io/badge/Spring-5.3-green)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4-green)
+![React](https://img.shields.io/badge/React-18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 
 ## Features
 
 - Browse albums, artists, and bands
-- Stream audio directly in the browser with the built-in Plyr audio player
-- Search for music across the library
-- User registration and authentication with Spring Security
-- Playlist management with shuffle and repeat
-- Responsive design with Bootstrap and Semantic UI
+- Stream audio in the browser with a full-featured player (play/pause, next/prev, shuffle, repeat, seek)
+- Dark mode and light mode
+- Search across albums, artists, bands, and songs
+- User registration and JWT-based authentication
+- Playlist management (create, add/remove songs)
+- Responsive design
 
 ## Tech Stack
 
-| Layer       | Technology                              |
-|-------------|-----------------------------------------|
-| Backend     | Spring MVC, Spring Security, Spring Data JPA |
-| ORM         | Hibernate 5.3                           |
-| Database    | MySQL 8.0                               |
-| Frontend    | JSP, jQuery, Bootstrap 4, Plyr          |
-| Build       | Maven (multi-module)                    |
-| Runtime     | Apache Tomcat 8.5                       |
-| Container   | Docker Compose                          |
+| Layer       | Technology                                     |
+|-------------|------------------------------------------------|
+| Backend     | Spring Boot 3.4, Spring Security, Spring Data JPA |
+| Auth        | JWT (jjwt)                                     |
+| Database    | MySQL 8.0                                      |
+| Frontend    | React 18, TypeScript, Vite                     |
+| Styling     | Tailwind CSS (dark mode)                       |
+| State       | Zustand                                        |
+| Audio       | Howler.js                                      |
+| Build       | Maven with frontend-maven-plugin               |
+| Container   | Docker Compose                                 |
 
 ## Project Structure
 
 ```
 beatify/
-├── beatify-core/          # Domain entities, repositories, services, DTOs
-├── beatify-web/           # Controllers, REST APIs, Spring config, JSP views
-│   └── src/main/webapp/WEB-INF/
-│       ├── jsp/           # View templates
-│       └── resources/     # CSS, JS, images
+├── src/main/java/com/paradise/beatify/
+│   ├── config/          # Security, web config
+│   ├── controller/      # REST API controllers
+│   ├── domain/          # JPA entities and enums
+│   ├── dto/             # Request/response records
+│   ├── repository/      # Spring Data repositories
+│   ├── security/        # JWT token provider, auth filter
+│   └── service/         # Business logic
+├── src/main/resources/
+│   ├── application.yml  # App configuration
+│   └── static/          # React build output (generated)
+├── frontend/
+│   └── src/
+│       ├── api/         # Axios API client
+│       ├── components/  # React components (Navbar, Player, etc.)
+│       ├── pages/       # Page components (Home, Album, Search, etc.)
+│       ├── store/       # Zustand stores (auth, player, theme)
+│       └── types/       # TypeScript interfaces
 ├── docker/
-│   └── init.sql           # Database schema and seed data
-├── media/                 # Audio and image files (mounted volume, gitignored)
-├── Dockerfile             # Multi-stage build (Maven + Tomcat)
+│   └── init.sql         # Database schema and seed data
+├── media/               # Audio and image files (mounted volume)
+├── Dockerfile           # Multi-stage build (Maven + JRE)
 └── docker-compose.yml
 ```
 
@@ -69,47 +86,68 @@ The app will be available at **http://localhost:8080**.
 
 Place audio files in the `media/` directory. The app serves everything under `/media/**`.
 
-Song entries in the database reference files via the `serverURL` column. The included seed data expects files at:
+The seed data expects files at:
 
 ```
 media/radiohead/in-rainbows/
 ├── cover.jpg
 ├── 01-15-step.mp3
 ├── 02-bodysnatchers.mp3
-├── 03-nude.mp3
-├── 04-weird-fishes-arpeggi.mp3
-├── 05-all-i-need.mp3
-├── 06-faust-arp.mp3
-├── 07-reckoner.mp3
-├── 08-house-of-cards.mp3
-├── 09-jigsaw-falling-into-place.mp3
+├── ...
 └── 10-videotape.mp3
 ```
 
-### Reset Database
+### API Endpoints
 
-The init script only runs on a fresh MySQL volume. To re-seed:
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/auth/login` | Login (returns JWT) |
+| POST | `/api/auth/register` | Register new user |
+| GET | `/api/auth/me` | Current user info |
+| GET | `/api/albums/featured` | Featured albums |
+| GET | `/api/albums/recent` | Recently added albums |
+| GET | `/api/albums/{id}` | Album detail with songs |
+| GET | `/api/artists/{id}` | Artist detail |
+| GET | `/api/bands/{id}` | Band detail |
+| GET | `/api/songs/{id}` | Song detail |
+| GET | `/api/search?q=` | Search all entities |
+| GET | `/api/playlists` | User playlists (auth) |
+| POST | `/api/playlists` | Create playlist (auth) |
+| PUT | `/api/playlists/{id}/songs/{songId}` | Add song (auth) |
+| DELETE | `/api/playlists/{id}/songs/{songId}` | Remove song (auth) |
+
+### Reset Database
 
 ```bash
 docker compose down -v
 docker compose up --build
 ```
 
-## Configuration
+### Development
 
-Database credentials and JDBC URL are defined in:
+For frontend development with hot reload:
 
-- `beatify-core/.../util/constants/BeatifyConstants.java`
-- `beatify-web/src/main/resources/META-INF/persistence.xml`
+```bash
+# Terminal 1: Start backend + MySQL
+docker compose up mysql
+mvn spring-boot:run
 
-Default connection settings:
+# Terminal 2: Start Vite dev server
+cd frontend
+npm run dev
+```
 
-| Setting  | Value                                  |
-|----------|----------------------------------------|
-| Host     | `mysql` (Docker service name)          |
-| Database | `beatify`                              |
-| User     | `root`                                 |
-| Password | `mysql-root-password`                  |
+The Vite dev server proxies API requests to `localhost:8080`.
+
+### Removing Old Files
+
+After verifying the new app works, run the cleanup script to remove the legacy JSP codebase:
+
+```bash
+./cleanup-old.sh
+```
+
+This removes `beatify-core/`, `beatify-web/`, and `.github/`.
 
 ## License
 

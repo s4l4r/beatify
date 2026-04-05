@@ -1,12 +1,12 @@
-FROM maven:3.8-openjdk-8 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
-COPY beatify-core beatify-core
-COPY beatify-web beatify-web
+COPY src src
+COPY frontend frontend
 RUN mvn package -DskipTests -B
 
-FROM tomcat:8.5-jdk8
-RUN rm -rf /usr/local/tomcat/webapps/*
-COPY --from=build /app/beatify-web/target/beatify-web.war /usr/local/tomcat/webapps/ROOT.war
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /app/target/beatify-2.0.0.jar app.jar
 EXPOSE 8080
-CMD ["catalina.sh", "run"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
