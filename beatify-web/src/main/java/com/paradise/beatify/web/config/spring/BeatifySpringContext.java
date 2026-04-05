@@ -61,6 +61,7 @@ public class BeatifySpringContext implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/resources/");
+        registry.addResourceHandler("/media/**").addResourceLocations("file:/media/");
     }
 
     @Override

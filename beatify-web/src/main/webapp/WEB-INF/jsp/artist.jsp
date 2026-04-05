@@ -18,7 +18,7 @@
         <!-- default header name is X-CSRF-TOKEN -->
         <meta name="_csrf_header" content="${_csrf.headerName}"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${artist.firstName}&nbsp;${artist.lastName}</title>
+        <title><c:choose><c:when test="${isBand}">${artist.title}</c:when><c:otherwise>${artist.firstName}&nbsp;${artist.lastName}</c:otherwise></c:choose></title>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:500" rel="stylesheet">
@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="<c:url value="/resources/stickyplayer/css/stickyaudioplayerjquery.min.css"/>">
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/niceselect/css/nice-select.css"/>">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/plyr/dist/plyr.css"/>">
+        <link rel="stylesheet" type="text/css" href="https://cdn.plyr.io/3.7.8/plyr.css">
         <script   src="https://code.jquery.com/jquery-3.3.1.js"   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="   crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
         <script src="<c:url value="/resources/niceselect/js/jquery.nice-select.js"/>"></script>
@@ -41,7 +41,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5media/1.1.8/html5media.min.js" type="text/javascript"></script>
-        <script src="<c:url value="/resources/plyr/dist/plyr.min.js"/>"></script>
+        <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     </head>
     <body>
         <div class="static">
@@ -158,7 +158,7 @@
                                                 <div class="container" style="margin-top: 0px !important;">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <sform:form method="post" action="http://localhost:8080/beatify-web/signup" modelAttribute="userDTO" id="signup-form">
+                                                            <sform:form method="post" action="/signup" modelAttribute="userDTO" id="signup-form">
                                                                 <sform:input path="username" id="usernameSignup"
                                                                              cssClass="form-control" type="email"
                                                                              placeholder="Your Email Address"/>

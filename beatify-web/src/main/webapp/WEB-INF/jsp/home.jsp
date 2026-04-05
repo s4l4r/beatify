@@ -30,7 +30,7 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="<c:url value="/resources/stickyplayer/css/stickyaudioplayerjquery.min.css"/>">
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/niceselect/css/nice-select.css"/>">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/plyr/dist/plyr.css"/>">
+        <link rel="stylesheet" type="text/css" href="https://cdn.plyr.io/3.7.8/plyr.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
               integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
               crossorigin="anonymous">
@@ -44,7 +44,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5media/1.1.8/html5media.min.js" type="text/javascript"></script>
-        <script src="<c:url value="/resources/plyr/dist/plyr.min.js"/>"></script>
+        <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     </head>
     <body>
     <div class="static">
@@ -160,7 +160,7 @@
                                             <div class="container" style="margin-top: 0px !important;">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <sform:form method="post" action="http://localhost:8080/beatify-web/signup" modelAttribute="userDTO" id="signup-form">
+                                                        <sform:form method="post" action="/signup" modelAttribute="userDTO" id="signup-form">
                                                             <sform:input path="username" id="usernameSignup"
                                                                          cssClass="form-control" type="email"
                                                                          placeholder="Your Email Address"/>

@@ -28,7 +28,7 @@ $(document).ready(function(){
             $.ajax({
 
                 type: 'GET',
-                url: 'http://localhost:8080/beatify-web/api/songs/setSongInfo',
+                url: '/api/songs/setSongInfo',
                 cache: true,
                 method: 'GET',
                 dataType: 'text',
@@ -160,7 +160,7 @@ $(document).ready(function(){
             $.ajax({
 
                 type: 'GET',
-                url: 'http://localhost:8080/beatify-web/api/songs',
+                url: '/api/songs',
                 cache: true,
                 method: 'GET',
                 dataType: 'text',
@@ -223,7 +223,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: 'GET',
-            url: 'http://localhost:8080/beatify-web/api/songs',
+            url: '/api/songs',
             cache: true,
             method: 'GET',
             dataType: 'text',
@@ -321,7 +321,7 @@ $(document).ready(function(){
         audio.pause();
         $('#songInfo').empty();
         $('#plList').empty();
-        $('.img img').attr("src", "http://localhost:8080/beatify-web/resources/images/webimages/logo.png");
+        $('.img img').attr("src", "/resources/images/webimages/logo.png");
     }
 
     function checkPlaylistCount() {
@@ -500,7 +500,7 @@ $(document).ready(function(){
                 $.ajax({
 
                     type: 'GET',
-                    url: 'http://localhost:8080/beatify-web/api/songs',
+                    url: '/api/songs',
                     cache: true,
                     method: 'GET',
                     dataType: 'text',

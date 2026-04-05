@@ -105,7 +105,7 @@
 
 body {
 
-    background: url("http://localhost:8080/beatify-web/resources/images/webimages/background9.jpg") !important;
+    background: url("../images/webimages/background9.jpg") !important;
 }
 
 .plyr {
