@@ -25,8 +25,8 @@ export function AlbumCard({ album }: AlbumCardProps) {
   return (
     <button
       onClick={handleClick}
-      className="group w-full text-left bg-gray-800/40 dark:bg-gray-800/40 bg-gray-100 rounded-lg p-3 sm:p-4
-        hover:bg-gray-700/60 dark:hover:bg-gray-700/60 hover:bg-gray-200
+      className="group w-full text-left bg-gray-800/40 rounded-lg p-3 sm:p-4
+        hover:bg-gray-700/60
         transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-black/20
         cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900"
       aria-label={`View album ${album.title} by ${album.artistName}`}
@@ -57,12 +57,12 @@ export function AlbumCard({ album }: AlbumCardProps) {
           </div>
         </div>
       </div>
-      <h3 className="font-semibold text-sm sm:text-base text-white dark:text-white text-gray-900 truncate">
+      <h3 className="font-semibold text-sm sm:text-base text-white truncate">
         {album.title}
       </h3>
       <p
         onClick={handleArtistClick}
-        className="text-xs sm:text-sm text-gray-400 dark:text-gray-400 text-gray-500 truncate mt-1
+        className="text-xs sm:text-sm text-gray-400 truncate mt-1
           hover:text-primary-400 hover:underline cursor-pointer"
         role="link"
         aria-label={`View artist ${album.artistName}`}

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { usePlayerStore } from '@/store/playerStore';
 import { PlaylistModal } from './PlaylistModal';
+import { FavoriteButton } from './FavoriteButton';
 
 function formatTime(seconds: number): string {
   if (isNaN(seconds) || seconds < 0) return '0:00';
@@ -96,8 +97,8 @@ export function Player() {
   return (
     <>
       <div
-        className="fixed bottom-0 left-0 right-0 h-20 bg-gray-900/95 dark:bg-gray-900/95 bg-white/95
-          backdrop-blur-lg border-t border-gray-800 dark:border-gray-800 border-gray-200
+        className="fixed bottom-0 left-0 right-0 h-20 bg-gray-900/95
+          backdrop-blur-lg border-t border-gray-800
           flex items-center z-30 px-4"
         role="region"
         aria-label="Audio player"
@@ -118,13 +119,14 @@ export function Player() {
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-medium text-white dark:text-white text-gray-900 truncate">
+            <p className="text-sm font-medium text-white truncate">
               {currentTrack.title}
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-400 text-gray-500 truncate">
+            <p className="text-xs text-gray-400 truncate">
               {currentTrack.album?.artistName ?? 'Unknown Artist'}
             </p>
           </div>
+          <FavoriteButton songId={currentTrack.id} />
         </div>
 
         {/* Center: Controls + Progress */}
@@ -134,9 +136,7 @@ export function Player() {
             <button
               onClick={toggleShuffle}
               className={`p-1 transition-colors ${
-                shuffle
-                  ? 'text-primary-500'
-                  : 'text-gray-400 hover:text-white dark:hover:text-white hover:text-gray-900'
+                shuffle ? 'text-primary-500' : 'text-gray-400 hover:text-white'
               }`}
               aria-label={`Shuffle ${shuffle ? 'on' : 'off'}`}
               aria-pressed={shuffle}
@@ -146,7 +146,7 @@ export function Player() {
 
             <button
               onClick={previous}
-              className="p-1 text-gray-400 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors"
+              className="p-1 text-gray-400 hover:text-white transition-colors"
               aria-label="Previous track"
             >
               <SkipBack className="w-5 h-5 fill-current" />
@@ -154,20 +154,20 @@ export function Player() {
 
             <button
               onClick={isPlaying ? pause : resume}
-              className="w-8 h-8 rounded-full bg-white dark:bg-white bg-gray-900 flex items-center justify-center
+              className="w-8 h-8 rounded-full bg-white flex items-center justify-center
                 hover:scale-105 transition-transform"
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? (
-                <Pause className="w-4 h-4 text-black dark:text-black text-white fill-current" />
+                <Pause className="w-4 h-4 text-black fill-current" />
               ) : (
-                <Play className="w-4 h-4 text-black dark:text-black text-white fill-current ml-0.5" />
+                <Play className="w-4 h-4 text-black fill-current ml-0.5" />
               )}
             </button>
 
             <button
               onClick={next}
-              className="p-1 text-gray-400 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors"
+              className="p-1 text-gray-400 hover:text-white transition-colors"
               aria-label="Next track"
             >
               <SkipForward className="w-5 h-5 fill-current" />
@@ -176,9 +176,7 @@ export function Player() {
             <button
               onClick={toggleRepeat}
               className={`p-1 transition-colors ${
-                repeat
-                  ? 'text-primary-500'
-                  : 'text-gray-400 hover:text-white dark:hover:text-white hover:text-gray-900'
+                repeat ? 'text-primary-500' : 'text-gray-400 hover:text-white'
               }`}
               aria-label={`Repeat ${repeat ? 'on' : 'off'}`}
               aria-pressed={repeat}
@@ -194,7 +192,7 @@ export function Player() {
             </span>
             <div
               ref={progressRef}
-              className="flex-1 h-1 bg-gray-600 dark:bg-gray-600 bg-gray-300 rounded-full cursor-pointer group relative"
+              className="flex-1 h-1 bg-gray-600 rounded-full cursor-pointer group relative"
               onClick={handleProgressClick}
               onMouseDown={handleProgressMouseDown}
               role="slider"
@@ -205,7 +203,7 @@ export function Player() {
               tabIndex={0}
             >
               <div
-                className="absolute top-0 left-0 h-full bg-white dark:bg-white bg-gray-900 rounded-full
+                className="absolute top-0 left-0 h-full bg-white rounded-full
                   group-hover:bg-primary-500 transition-colors"
                 style={{ width: `${progressPercent}%` }}
               />
@@ -240,9 +238,7 @@ export function Player() {
           <button
             onClick={() => setShowQueue(!showQueue)}
             className={`p-1 transition-colors ${
-              showQueue
-                ? 'text-primary-500'
-                : 'text-gray-400 hover:text-white dark:hover:text-white hover:text-gray-900'
+              showQueue ? 'text-primary-500' : 'text-gray-400 hover:text-white'
             }`}
             aria-label="Toggle queue"
             aria-pressed={showQueue}

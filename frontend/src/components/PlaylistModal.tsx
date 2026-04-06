@@ -22,16 +22,14 @@ export function PlaylistModal({ isOpen, onClose }: PlaylistModalProps) {
 
       {/* Modal */}
       <div
-        className="fixed right-0 top-0 bottom-20 w-full max-w-md bg-gray-900 dark:bg-gray-900 bg-white
-          z-50 shadow-2xl flex flex-col border-l border-gray-800 dark:border-gray-800 border-gray-200"
+        className="fixed right-0 top-0 bottom-20 w-full max-w-md bg-gray-900
+          z-50 shadow-2xl flex flex-col border-l border-gray-800"
         role="dialog"
         aria-label="Playback queue"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-800 dark:border-gray-800 border-gray-200">
-          <h2 className="text-lg font-semibold text-white dark:text-white text-gray-900">
-            Queue
-          </h2>
+        <div className="flex items-center justify-between p-4 border-b border-gray-800">
+          <h2 className="text-lg font-semibold text-white">Queue</h2>
           <button
             onClick={onClose}
             className="p-1 text-gray-400 hover:text-white transition-colors rounded-md
@@ -57,7 +55,7 @@ export function PlaylistModal({ isOpen, onClose }: PlaylistModalProps) {
                   <div
                     key={`${song.id}-${index}`}
                     className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors
-                      ${isCurrent ? 'bg-primary-500/10' : 'hover:bg-gray-800/50 dark:hover:bg-gray-800/50 hover:bg-gray-100'}`}
+                      ${isCurrent ? 'bg-primary-500/10' : 'hover:bg-gray-800/50'}`}
                   >
                     {/* Album art thumbnail */}
                     <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary-900 to-primary-600">
@@ -82,7 +80,7 @@ export function PlaylistModal({ isOpen, onClose }: PlaylistModalProps) {
                     >
                       <p
                         className={`text-sm font-medium truncate ${
-                          isCurrent ? 'text-primary-500' : 'text-white dark:text-white text-gray-900'
+                          isCurrent ? 'text-primary-500' : 'text-white'
                         }`}
                       >
                         {song.title}

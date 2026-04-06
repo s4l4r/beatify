@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://mysql/beatify?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/beatify?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: mysql-root-password
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,16 +13,25 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
   jackson:
     serialization:
       fail-on-empty-beans: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "ID"
+            client-secret: "SECRET"
+            scope: openid, profile, email
 
 server:
   port: 8080
 
 beatify:
-  jwt:
-    secret: beatify-super-secret-key-that-is-at-least-256-bits-long-for-hs256
-    expiration-ms: 86400000
   media:
-    path: /media/
+    path: /Users/salar/IdeaProjects/beatify/media

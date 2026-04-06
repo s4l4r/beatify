@@ -61,11 +61,11 @@ export default function ArtistPage() {
           <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">
             Artist
           </p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white dark:text-white text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             {artist.firstName} {artist.lastName}
           </h1>
 
-          <div className="space-y-2 text-sm text-gray-300 dark:text-gray-300 text-gray-600">
+          <div className="space-y-2 text-sm text-gray-300">
             {artist.nationality && (
               <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <MapPin className="w-4 h-4 text-gray-400" />
@@ -110,7 +110,7 @@ export default function ArtistPage() {
       {/* Albums */}
       {artist.albums && artist.albums.length > 0 && (
         <section>
-          <h2 className="text-2xl font-bold text-white dark:text-white text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold text-white mb-5">
             Discography
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">

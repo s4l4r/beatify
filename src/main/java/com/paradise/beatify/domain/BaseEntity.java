@@ -1,6 +1,8 @@
 package com.paradise.beatify.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +14,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "ENTITIES")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING)
 public class BaseEntity {
 
     @Id

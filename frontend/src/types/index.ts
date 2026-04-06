@@ -1,21 +1,7 @@
 export interface UserResponse {
-  id: number;
   firstName: string;
   lastName: string;
   email: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: UserResponse;
-}
-
-export interface RegisterData {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber?: string;
 }
 
 export interface AlbumSummary {
@@ -47,8 +33,11 @@ export interface SongSummary {
   id: number;
   title: string;
   duration: string;
+  serverURL: string;
   albumTitle: string;
   albumId: number;
+  albumArtURL: string | null;
+  artistName: string | null;
 }
 
 export interface ArtistDetail {
@@ -85,10 +74,27 @@ export interface BandSummary {
   title: string;
 }
 
-export interface Playlist {
+export interface PlaylistSummary {
   id: number;
   title: string;
+  icon: string;
+  isPublic: boolean;
+  ownerName: string;
+  songCount: number;
+  isOwner: boolean;
+  isSaved: boolean;
+}
+
+export interface PlaylistDetail {
+  id: number;
+  title: string;
+  icon: string;
+  isPublic: boolean;
+  ownerName: string;
+  songCount: number;
   songs: Song[];
+  isOwner: boolean;
+  isSaved: boolean;
 }
 
 export interface SearchResults {
@@ -96,4 +102,5 @@ export interface SearchResults {
   artists: ArtistSummary[];
   bands: BandSummary[];
   songs: SongSummary[];
+  playlists: PlaylistSummary[];
 }

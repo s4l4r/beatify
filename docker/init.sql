@@ -1,4 +1,4 @@
--- Beatify seed data: Radiohead - In Rainbows + demo user
+-- Beatify seed data: Radiohead - In Rainbows
 -- This script runs once on first MySQL initialization
 
 -- Schema (Hibernate JOINED inheritance)
@@ -61,18 +61,8 @@ CREATE TABLE IF NOT EXISTS USERS (
     id BIGINT NOT NULL,
     firstName VARCHAR(255),
     lastName VARCHAR(255),
-    nationality INT,
-    password VARCHAR(255),
-    phoneNumber VARCHAR(255),
     username VARCHAR(255),
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES ENTITIES(id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS AUTHORITIES (
-    id BIGINT NOT NULL,
-    role VARCHAR(255),
-    username VARCHAR(255),
+    googleId VARCHAR(255) UNIQUE,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES ENTITIES(id)
 ) ENGINE=InnoDB;
@@ -103,6 +93,8 @@ CREATE TABLE IF NOT EXISTS ARTIST_INSTRUMENT (
 
 CREATE TABLE IF NOT EXISTS PLAYLISTS (
     id BIGINT NOT NULL,
+    icon VARCHAR(10),
+    isPublic BIT(1) NOT NULL DEFAULT 0,
     USER_ID BIGINT,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES ENTITIES(id)
@@ -115,12 +107,12 @@ CREATE TABLE IF NOT EXISTS PLAYLIST_SONG (
     FOREIGN KEY (SONG_ID) REFERENCES SONGS(id)
 ) ENGINE=InnoDB;
 
--- Spring Security remember-me token table
-CREATE TABLE IF NOT EXISTS persistent_logins (
-    username VARCHAR(64) NOT NULL,
-    series VARCHAR(64) PRIMARY KEY,
-    token VARCHAR(64) NOT NULL,
-    last_used TIMESTAMP NOT NULL
+CREATE TABLE IF NOT EXISTS USER_SAVED_PLAYLIST (
+    PLAYLIST_ID BIGINT NOT NULL,
+    USER_ID BIGINT NOT NULL,
+    PRIMARY KEY (PLAYLIST_ID, USER_ID),
+    FOREIGN KEY (PLAYLIST_ID) REFERENCES PLAYLISTS(id),
+    FOREIGN KEY (USER_ID) REFERENCES USERS(id)
 ) ENGINE=InnoDB;
 
 -- =============================================================================
@@ -149,10 +141,7 @@ INSERT INTO ENTITIES (id, DTYPE, active, title) VALUES
 (14, 'Song', 1, 'Reckoner'),
 (15, 'Song', 1, 'House of Cards'),
 (16, 'Song', 1, 'Jigsaw Falling into Place'),
-(17, 'Song', 1, 'Videotape'),
--- User & authority
-(18, 'BeatifyUser', 1, 'demo'),
-(19, 'Authority', 1, 'ROLE_USER');
+(17, 'Song', 1, 'Videotape');
 
 -- Band: Radiohead (nationality 1 = UK ordinal)
 INSERT INTO BANDS (id, nationality, yearsActive) VALUES
@@ -210,11 +199,3 @@ INSERT INTO SONGS (id, duration, serverURL, ALBUM_ID, ALBUM_ORDER) VALUES
 (15, '5:28', '/media/radiohead/in-rainbows/08-house-of-cards.mp3',              7, 7),
 (16, '4:09', '/media/radiohead/in-rainbows/09-jigsaw-falling-into-place.mp3',   7, 8),
 (17, '4:40', '/media/radiohead/in-rainbows/10-videotape.mp3',                   7, 9);
-
--- Demo user (password: "password", BCrypt-encoded)
-INSERT INTO USERS (id, firstName, lastName, nationality, password, phoneNumber, username) VALUES
-(18, 'Demo', 'User', 1, '$2a$10$Yr4SMWhI.kEHO2EcmYSoKeCo.7bqC4PSmyQDqj311e2g0u8D/pfJu', NULL, 'demo@beatify.com');
-
--- Authority for demo user
-INSERT INTO AUTHORITIES (id, role, username) VALUES
-(19, 'ROLE_USER', 'demo@beatify.com');

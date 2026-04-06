@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Disc3, User, Users, Music2 } from 'lucide-react';
+import { Search, Disc3, User, Users, Music2, Globe, Lock, ListMusic } from 'lucide-react';
 import { Spinner } from '@/components/Spinner';
+import { FavoriteButton } from '@/components/FavoriteButton';
+import { AddToPlaylistMenu } from '@/components/AddToPlaylistMenu';
 import { useDebounce } from '@/hooks/useDebounce';
 import { usePlayerStore } from '@/store/playerStore';
 import * as searchApi from '@/api/search';
-import type { SearchResults, Song } from '@/types';
+import type { SearchResults, Song, SongSummary } from '@/types';
 
 export default function SearchPage() {
   const [query, setQuery] = useState('');
@@ -36,16 +38,25 @@ export default function SearchPage() {
       }
     };
 
-    doSearch();
+    doSearch().then(r => r);
   }, [debouncedQuery]);
 
-  const handlePlaySong = (songSummary: { id: number; title: string; duration: string; albumTitle: string; albumId: number }) => {
-    // Build a minimal Song object from the summary
+  const handlePlaySong = (songSummary: SongSummary) => {
     const song: Song = {
       id: songSummary.id,
       title: songSummary.title,
       duration: songSummary.duration,
-      serverURL: `/api/songs/${songSummary.id}/stream`,
+      serverURL: songSummary.serverURL,
+      album: songSummary.albumId ? {
+        id: songSummary.albumId,
+        title: songSummary.albumTitle,
+        year: 0,
+        albumArtURL: songSummary.albumArtURL ?? '',
+        bandAlbum: false,
+        artistName: songSummary.artistName ?? '',
+        artistId: 0,
+        isBand: false,
+      } : undefined,
     };
     play(song);
     addToPlaylist(song);
@@ -56,7 +67,8 @@ export default function SearchPage() {
     (results.albums.length > 0 ||
       results.artists.length > 0 ||
       results.bands.length > 0 ||
-      results.songs.length > 0);
+      results.songs.length > 0 ||
+      (results.playlists && results.playlists.length > 0));
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -69,11 +81,11 @@ export default function SearchPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="What do you want to listen to?"
-            className="w-full pl-12 pr-4 py-3 bg-gray-800 dark:bg-gray-800 bg-gray-100
-              text-white dark:text-white text-gray-900 rounded-full
-              border border-gray-700 dark:border-gray-700 border-gray-300
+            className="w-full pl-12 pr-4 py-3 bg-gray-800
+              text-white rounded-full
+              border border-gray-700
               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent
-              placeholder-gray-400 dark:placeholder-gray-400 placeholder-gray-500
+              placeholder-gray-400
               text-lg transition-all"
             aria-label="Search for music"
             autoFocus
@@ -90,7 +102,7 @@ export default function SearchPage() {
           {/* Albums */}
           {results.albums.length > 0 && (
             <section>
-              <h2 className="text-xl font-bold text-white dark:text-white text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <Disc3 className="w-5 h-5 text-primary-500" />
                 Albums
               </h2>
@@ -99,8 +111,8 @@ export default function SearchPage() {
                   <button
                     key={album.id}
                     onClick={() => navigate(`/albums/${album.id}`)}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40 dark:bg-gray-800/40 bg-gray-100
-                      hover:bg-gray-700/60 dark:hover:bg-gray-700/60 hover:bg-gray-200
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40
+                      hover:bg-gray-700/60
                       transition-all duration-200 text-left w-full"
                   >
                     <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary-900 to-primary-600">
@@ -117,7 +129,7 @@ export default function SearchPage() {
                       )}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-white dark:text-white text-gray-900 truncate">
+                      <p className="text-sm font-medium text-white truncate">
                         {album.title}
                       </p>
                       <p className="text-xs text-gray-400 truncate">
@@ -133,7 +145,7 @@ export default function SearchPage() {
           {/* Artists */}
           {results.artists.length > 0 && (
             <section>
-              <h2 className="text-xl font-bold text-white dark:text-white text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <User className="w-5 h-5 text-primary-500" />
                 Artists
               </h2>
@@ -142,15 +154,15 @@ export default function SearchPage() {
                   <button
                     key={artist.id}
                     onClick={() => navigate(`/artists/${artist.id}`)}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40 dark:bg-gray-800/40 bg-gray-100
-                      hover:bg-gray-700/60 dark:hover:bg-gray-700/60 hover:bg-gray-200
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40
+                      hover:bg-gray-700/60
                       transition-all duration-200 text-left w-full"
                   >
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-600 to-gray-800
                       flex items-center justify-center flex-shrink-0">
                       <User className="w-5 h-5 text-gray-400" />
                     </div>
-                    <p className="text-sm font-medium text-white dark:text-white text-gray-900 truncate">
+                    <p className="text-sm font-medium text-white truncate">
                       {artist.firstName} {artist.lastName}
                     </p>
                   </button>
@@ -162,7 +174,7 @@ export default function SearchPage() {
           {/* Bands */}
           {results.bands.length > 0 && (
             <section>
-              <h2 className="text-xl font-bold text-white dark:text-white text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <Users className="w-5 h-5 text-primary-500" />
                 Bands
               </h2>
@@ -171,15 +183,15 @@ export default function SearchPage() {
                   <button
                     key={band.id}
                     onClick={() => navigate(`/bands/${band.id}`)}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40 dark:bg-gray-800/40 bg-gray-100
-                      hover:bg-gray-700/60 dark:hover:bg-gray-700/60 hover:bg-gray-200
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40
+                      hover:bg-gray-700/60
                       transition-all duration-200 text-left w-full"
                   >
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-600 to-gray-800
                       flex items-center justify-center flex-shrink-0">
                       <Users className="w-5 h-5 text-gray-400" />
                     </div>
-                    <p className="text-sm font-medium text-white dark:text-white text-gray-900 truncate">
+                    <p className="text-sm font-medium text-white truncate">
                       {band.title}
                     </p>
                   </button>
@@ -191,34 +203,89 @@ export default function SearchPage() {
           {/* Songs */}
           {results.songs.length > 0 && (
             <section>
-              <h2 className="text-xl font-bold text-white dark:text-white text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <Music2 className="w-5 h-5 text-primary-500" />
                 Songs
               </h2>
               <div className="space-y-1">
                 {results.songs.map((song) => (
-                  <button
+                  <div
                     key={song.id}
-                    onClick={() => handlePlaySong(song)}
-                    className="flex items-center gap-3 w-full p-3 rounded-lg
-                      hover:bg-gray-800/50 dark:hover:bg-gray-800/50 hover:bg-gray-100
-                      transition-colors duration-150 text-left"
+                    className="group flex items-center gap-3 w-full p-3 rounded-lg
+                      hover:bg-gray-800/50 transition-colors duration-150"
                   >
-                    <div className="w-10 h-10 rounded bg-gradient-to-br from-primary-900 to-primary-600
-                      flex items-center justify-center flex-shrink-0">
-                      <Music2 className="w-4 h-4 text-primary-300/60" />
+                    <button
+                      onClick={() => handlePlaySong(song)}
+                      className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                    >
+                      <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary-900 to-primary-600">
+                        {song.albumArtURL ? (
+                          <img src={song.albumArtURL} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Music2 className="w-4 h-4 text-primary-300/60" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-white truncate">
+                          {song.title}
+                        </p>
+                        <p className="text-xs text-gray-400 truncate">
+                          {song.artistName ?? song.albumTitle}
+                        </p>
+                      </div>
+                    </button>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <FavoriteButton songId={song.id} />
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <AddToPlaylistMenu songId={song.id} songTitle={song.title} />
+                      </div>
+                      <span className="text-xs text-gray-500 w-10 text-right">
+                        {song.duration}
+                      </span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white dark:text-white text-gray-900 truncate">
-                        {song.title}
-                      </p>
-                      <p className="text-xs text-gray-400 truncate">
-                        {song.albumTitle}
-                      </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Playlists */}
+          {results.playlists && results.playlists.length > 0 && (
+            <section>
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <ListMusic className="w-5 h-5 text-primary-500" />
+                Playlists
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {results.playlists.map((playlist) => (
+                  <button
+                    key={playlist.id}
+                    onClick={() => navigate(`/playlists/${playlist.id}`)}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/40
+                      hover:bg-gray-700/60
+                      transition-all duration-200 text-left w-full"
+                  >
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary-900/60 to-gray-800
+                      flex items-center justify-center text-xl flex-shrink-0">
+                      {playlist.icon}
                     </div>
-                    <span className="text-xs text-gray-500 flex-shrink-0">
-                      {song.duration}
-                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-white truncate">
+                        {playlist.title}
+                      </p>
+                      <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                        {playlist.isPublic ? (
+                          <Globe className="w-3 h-3" />
+                        ) : (
+                          <Lock className="w-3 h-3" />
+                        )}
+                        <span>{playlist.ownerName}</span>
+                        <span>&middot;</span>
+                        <span>{playlist.songCount} songs</span>
+                      </div>
+                    </div>
                   </button>
                 ))}
               </div>

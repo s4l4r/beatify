@@ -61,11 +61,11 @@ export default function BandPage() {
           <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">
             Band
           </p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white dark:text-white text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
             {band.title}
           </h1>
 
-          <div className="space-y-2 text-sm text-gray-300 dark:text-gray-300 text-gray-600">
+          <div className="space-y-2 text-sm text-gray-300">
             {band.nationality && (
               <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <MapPin className="w-4 h-4 text-gray-400" />
@@ -87,7 +87,7 @@ export default function BandPage() {
                 <span
                   key={genre}
                   className="px-2.5 py-0.5 text-xs font-medium rounded-full
-                    bg-gray-800 dark:bg-gray-800 bg-gray-200 text-gray-300 dark:text-gray-300 text-gray-600"
+                    bg-gray-800 text-gray-300"
                 >
                   {genre}
                 </span>
@@ -100,7 +100,7 @@ export default function BandPage() {
       {/* Members */}
       {band.members && band.members.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-white dark:text-white text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold text-white mb-5">
             Members
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -108,15 +108,15 @@ export default function BandPage() {
               <Link
                 key={member.id}
                 to={`/artists/${member.id}`}
-                className="flex flex-col items-center p-4 rounded-lg bg-gray-800/40 dark:bg-gray-800/40 bg-gray-100
-                  hover:bg-gray-700/60 dark:hover:bg-gray-700/60 hover:bg-gray-200
+                className="flex flex-col items-center p-4 rounded-lg bg-gray-800/40
+                  hover:bg-gray-700/60
                   transition-all duration-200 group"
               >
                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-600 to-gray-800
                   flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
                   <Users className="w-8 h-8 text-gray-400" />
                 </div>
-                <p className="text-sm font-medium text-white dark:text-white text-gray-900 text-center">
+                <p className="text-sm font-medium text-white text-center">
                   {member.firstName} {member.lastName}
                 </p>
               </Link>
@@ -128,7 +128,7 @@ export default function BandPage() {
       {/* Albums */}
       {band.albums && band.albums.length > 0 && (
         <section>
-          <h2 className="text-2xl font-bold text-white dark:text-white text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold text-white mb-5">
             Discography
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">

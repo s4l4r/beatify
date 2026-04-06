@@ -13,7 +13,7 @@ export default function AlbumPage() {
   const [album, setAlbum] = useState<AlbumDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { setPlaylist, addToPlaylist } = usePlayerStore();
+  const { setPlaylist } = usePlayerStore();
 
   const fetchAlbum = async () => {
     if (!id) return;
@@ -48,7 +48,6 @@ export default function AlbumPage() {
     );
   }
 
-  // Build song objects with album reference for the player
   const songsWithAlbum: Song[] = album.songs.map((song) => ({
     ...song,
     album: {
@@ -67,10 +66,6 @@ export default function AlbumPage() {
     if (songsWithAlbum.length > 0) {
       setPlaylist(songsWithAlbum, 0);
     }
-  };
-
-  const handleAddToPlaylist = (song: Song) => {
-    addToPlaylist(song);
   };
 
   const artistLink = album.isBand
@@ -102,13 +97,13 @@ export default function AlbumPage() {
           <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">
             Album
           </p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white dark:text-white text-gray-900 mb-3">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3">
             {album.title}
           </h1>
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-sm text-gray-300 dark:text-gray-300 text-gray-600">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-sm text-gray-300">
             <Link
               to={artistLink}
-              className="font-semibold text-white dark:text-white text-gray-900 hover:text-primary-400 hover:underline transition-colors"
+              className="font-semibold text-white hover:text-primary-400 hover:underline transition-colors"
             >
               {album.artistName}
             </Link>
@@ -125,7 +120,7 @@ export default function AlbumPage() {
                 <span
                   key={genre}
                   className="px-2.5 py-0.5 text-xs font-medium rounded-full
-                    bg-gray-800 dark:bg-gray-800 bg-gray-200 text-gray-300 dark:text-gray-300 text-gray-600"
+                    bg-gray-800 text-gray-300"
                 >
                   {genre}
                 </span>
@@ -151,7 +146,7 @@ export default function AlbumPage() {
       {/* Song list */}
       <div className="mt-2">
         {/* Header row */}
-        <div className="flex items-center gap-4 px-4 py-2 border-b border-gray-800 dark:border-gray-800 border-gray-200 text-gray-400 text-xs uppercase tracking-wider">
+        <div className="flex items-center gap-4 px-4 py-2 border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
           <div className="w-8 text-center">#</div>
           <div className="flex-1">Title</div>
           <div className="w-12 text-right">
@@ -167,7 +162,6 @@ export default function AlbumPage() {
               song={song}
               index={index}
               songs={songsWithAlbum}
-              onAddToPlaylist={handleAddToPlaylist}
             />
           ))}
         </div>

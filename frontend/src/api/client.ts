@@ -7,23 +7,14 @@ const client = axios.create({
   },
 });
 
-client.interceptors.request.use((config) => {
-  const token = localStorage.getItem('beatify-token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('beatify-token');
-      // Only redirect if we're not already on auth pages
       if (
         !window.location.pathname.includes('/login') &&
-        !window.location.pathname.includes('/register')
+        !window.location.pathname.includes('/home') &&
+        window.location.pathname !== '/'
       ) {
         window.location.href = '/login';
       }

@@ -38,21 +38,21 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <ErrorMessage message={error} onRetry={fetchAlbums} />
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Trending section */}
       {featured.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-white dark:text-white text-gray-900 mb-5">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-5">
             Trending on Beatify
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
             {featured.map((album) => (
               <AlbumCard key={album.id} album={album} />
             ))}
@@ -63,10 +63,10 @@ export default function Home() {
       {/* Recently Added section */}
       {recent.length > 0 && (
         <section>
-          <h2 className="text-2xl font-bold text-white dark:text-white text-gray-900 mb-5">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-5">
             Recently Added
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
             {recent.map((album) => (
               <AlbumCard key={album.id} album={album} />
             ))}

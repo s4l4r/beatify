@@ -1,58 +1,48 @@
 package com.paradise.beatify.config;
 
-import com.paradise.beatify.security.JwtAuthenticationFilter;
+import com.paradise.beatify.security.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/albums/**").permitAll()
-                        .requestMatchers("/api/artists/**").permitAll()
-                        .requestMatchers("/api/bands/**").permitAll()
-                        .requestMatchers("/api/songs/**").permitAll()
-                        .requestMatchers("/api/search/**").permitAll()
-                        .requestMatchers("/media/**").permitAll()
                         .requestMatchers("/", "/*.html", "/*.js", "/*.css", "/assets/**").permitAll()
-                        .requestMatchers("/home", "/albums/**", "/artists/**", "/bands/**", "/search", "/login", "/register").permitAll()
-                        .requestMatchers("/api/playlists/**").authenticated()
+                        .requestMatchers("/home", "/albums/**", "/artists/**", "/bands/**", "/search", "/login", "/library", "/favorites", "/playlists/**").permitAll()
+                        .requestMatchers("/api/albums/featured", "/api/albums/recent").permitAll()
+                        .requestMatchers("/media/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .oidcUserService(customOAuth2UserService)
+                        )
+                        .defaultSuccessUrl("/home", true)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessHandler((request, response, authentication) ->
+                                response.setStatus(200)
+                        )
+                );
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
     }
 }

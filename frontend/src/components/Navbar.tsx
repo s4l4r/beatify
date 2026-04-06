@@ -1,184 +1,85 @@
-import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Sun, Moon, Menu, X, LogOut, User } from 'lucide-react';
+import { Home, Search, Library, LogOut } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
-import { useThemeStore } from '@/store/themeStore';
 
 export function Navbar() {
   const { isAuthenticated, user, logout } = useAuthStore();
-  const { isDark, toggle: toggleTheme } = useThemeStore();
   const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navLinkClass = (path: string) =>
-    `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+  const initials = user
+    ? `${user.firstName?.[0] ?? ''}${user.lastName?.[0] ?? ''}`.toUpperCase()
+    : '';
+
+  const pillClass = (path: string) =>
+    `flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
       isActive(path)
-        ? 'text-white dark:text-white text-gray-900 bg-gray-800 dark:bg-gray-800 bg-gray-200'
-        : 'text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-800 hover:bg-gray-200'
+        ? 'bg-gray-700 text-white shadow-sm'
+        : 'text-gray-400 hover:text-white'
     }`;
 
   return (
-    <nav
-      className="sticky top-0 z-20 bg-gray-900/80 dark:bg-gray-900/80 bg-white/80 backdrop-blur-lg
-        border-b border-gray-800/50 dark:border-gray-800/50 border-gray-200/50"
-      role="navigation"
-      aria-label="Main navigation"
-    >
+    <nav className="sticky top-0 z-20 bg-surface-950/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Left: Logo */}
-          <Link
-            to="/home"
-            className="flex items-center gap-2 flex-shrink-0"
-            aria-label="Beatify home"
-          >
-            <span className="text-2xl font-logo text-primary-500">Beatify</span>
+        <div className="flex items-center justify-between h-14 sm:h-16">
+          {/* Logo */}
+          <Link to="/home" className="flex-shrink-0" aria-label="Beatify home">
+            <span className="text-xl sm:text-2xl font-logo bg-gradient-to-r from-primary-400 via-primary-500 to-pink-500 bg-clip-text text-transparent">
+              Beatify
+            </span>
           </Link>
 
-          {/* Center: Nav links (desktop) */}
-          <div className="hidden sm:flex items-center gap-2">
-            <Link to="/home" className={navLinkClass('/home')}>
+          {/* Center: pill nav (desktop only) */}
+          <div className="hidden sm:flex items-center gap-0.5 bg-gray-800/50 rounded-full p-1">
+            <Link to="/home" className={pillClass('/home')}>
               <Home className="w-4 h-4" />
               Home
             </Link>
-            <Link to="/search" className={navLinkClass('/search')}>
+            <Link to="/search" className={pillClass('/search')}>
               <Search className="w-4 h-4" />
               Search
             </Link>
+            {isAuthenticated && (
+              <Link to="/library" className={pillClass('/library')}>
+                <Library className="w-4 h-4" />
+                Library
+              </Link>
+            )}
           </div>
 
-          {/* Right: Theme toggle + Auth */}
-          <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-gray-400 hover:text-white dark:hover:text-white hover:text-gray-900
-                transition-colors rounded-md"
-              aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {isDark ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
-
+          {/* Right: auth area */}
+          <div className="flex items-center gap-3">
             {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 text-sm text-gray-300 dark:text-gray-300 text-gray-600">
-                  <User className="w-4 h-4" />
-                  <span>
-                    {user?.firstName} {user?.lastName}
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-primary-500 to-pink-500 flex items-center justify-center text-white text-[10px] sm:text-xs font-bold shadow-lg shadow-primary-500/20">
+                    {initials}
+                  </div>
+                  <span className="hidden sm:inline text-sm text-gray-300 font-medium">
+                    {user?.firstName}
                   </span>
                 </div>
                 <button
-                  onClick={logout}
-                  className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-400
-                    hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors rounded-md
-                    hover:bg-gray-800 dark:hover:bg-gray-800 hover:bg-gray-200"
+                  onClick={() => logout()}
+                  className="p-1.5 sm:p-2 text-gray-500 hover:text-white transition-colors rounded-full hover:bg-gray-800"
                   aria-label="Sign out"
                 >
                   <LogOut className="w-4 h-4" />
-                  Sign out
                 </button>
               </div>
             ) : (
               <Link
                 to="/login"
-                className="px-4 py-1.5 text-sm font-medium text-white bg-primary-600 rounded-full
-                  hover:bg-primary-500 transition-colors"
+                className="px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-black bg-white rounded-full
+                  hover:scale-105 hover:bg-gray-100 transition-all"
               >
                 Sign in
               </Link>
             )}
           </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="sm:hidden p-2 text-gray-400 hover:text-white transition-colors"
-            aria-label="Toggle menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
         </div>
       </div>
-
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden border-t border-gray-800 dark:border-gray-800 border-gray-200 bg-gray-900 dark:bg-gray-900 bg-white">
-          <div className="px-4 py-3 space-y-2">
-            <Link
-              to="/home"
-              className={navLinkClass('/home')}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Home className="w-4 h-4" />
-              Home
-            </Link>
-            <Link
-              to="/search"
-              className={navLinkClass('/search')}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Search className="w-4 h-4" />
-              Search
-            </Link>
-
-            <div className="border-t border-gray-800 dark:border-gray-800 border-gray-200 pt-2 mt-2">
-              <button
-                onClick={() => {
-                  toggleTheme();
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-300 dark:text-gray-300 text-gray-600
-                  hover:text-white dark:hover:text-white hover:text-gray-900 rounded-md"
-              >
-                {isDark ? (
-                  <Sun className="w-4 h-4" />
-                ) : (
-                  <Moon className="w-4 h-4" />
-                )}
-                {isDark ? 'Light mode' : 'Dark mode'}
-              </button>
-
-              {isAuthenticated ? (
-                <>
-                  <div className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300">
-                    <User className="w-4 h-4" />
-                    {user?.firstName} {user?.lastName}
-                  </div>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-400
-                      hover:text-white rounded-md"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Sign out
-                  </button>
-                </>
-              ) : (
-                <Link
-                  to="/login"
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-primary-500 font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Sign in
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }

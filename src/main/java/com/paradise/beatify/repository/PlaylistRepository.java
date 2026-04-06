@@ -10,4 +10,8 @@ import java.util.List;
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     List<Playlist> findByBeatifyUserId(Long userId);
+
+    List<Playlist> findByIsPublicTrueAndTitleContainingIgnoreCase(String title);
+
+    java.util.Optional<Playlist> findByBeatifyUserIdAndFavoritesTrue(Long userId);
 }
